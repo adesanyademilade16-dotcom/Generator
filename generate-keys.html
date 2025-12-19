@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Key Generator - Admin Only</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, button { padding: 10px; margin: 5px; }
+        .key { background: #f0f0f0; padding: 10px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+<h1>🔑 Verification Key Generator</h1>
+<p><strong>Admin Only - Keep Secure!</strong></p>
+
+<button onclick="generateKey()">Generate 1 Key</button>
+<button onclick="generate10Keys()">Generate 10 Keys</button>
+
+<div id="output"></div>
+
+<script>
+const GENERATED_KEYS = "generatedVerificationKeys";
+
+function generateKey() {
+    const num = Math.floor(1000 + Math.random() * 9000);
+    const key = `PREM-${num}`;
+
+    let keys = JSON.parse(localStorage.getItem(GENERATED_KEYS)) || [];
+    if (!keys.includes(key)) {
+        keys.push(key);
+        localStorage.setItem(GENERATED_KEYS, JSON.stringify(keys));
+    }
+
+    document.getElementById('output').innerHTML += `<div class="key">${key}</div>`;
+    navigator.clipboard.writeText(key);
+    alert("Key generated & saved: " + key);
+}
+
+function generate10Keys() {
+    let keys = JSON.parse(localStorage.getItem(GENERATED_KEYS)) || [];
+    let html = "<h3>Generated Keys:</h3>";
+
+    for (let i = 0; i < 10; i++) {
+        const num = Math.floor(1000 + Math.random() * 9000);
+        const key = `PREM-${num}`;
+        if (!keys.includes(key)) {
+            keys.push(key);
+            html += `<div class="key">${key}</div>`;
+        }
+    }
+
+    localStorage.setItem(GENERATED_KEYS, JSON.stringify(keys));
+    document.getElementById('output').innerHTML = html;
+}
+</script>
+
+</body>
+</html>
